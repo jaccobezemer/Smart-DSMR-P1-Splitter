@@ -1,4 +1,4 @@
-Smart P1 splitter, by Jacco Bezemer, November 2022
+Smart DSMR Splitter
 ==================================================
 
 Device to let two devices communicate with the DSMR P1 port at different intervals
