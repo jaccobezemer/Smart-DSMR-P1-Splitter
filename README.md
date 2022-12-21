@@ -1,5 +1,5 @@
-Smart DSMR Splitter
-===================
+Smart DSMR P1 Splitter
+======================
 
 Splitter that splits the P1 port into two individual operating P1 ports (P2 and P3).
 It let's two devices communicate with the DSMR P1 port at different intervals.
