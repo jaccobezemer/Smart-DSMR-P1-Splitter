@@ -4,11 +4,11 @@
 #include <dsmr.h>
 
 #define P1_SERIAL_RX  18  // P1 -> UART1 which is attached to Smartmeter P1 TX pin
-#define P1_DR         2
+#define P1_DR         2   // P1 Data request
 #define P2_SERIAL_TX  17  // P2 -> UART2 which is attached to HomeWizard P1 RX pin
-#define P2_DR         34
+#define P2_DR         34  // P2 Data request
 #define P3_SERIAL_TX  1   // P3 -> UART0 which is attached to Alfen Loadbalancer RX pin 
-#define P3_DR         35
+#define P3_DR         35  // P3 Data request
 #define P1_LED        14  // lights up when a telegram is received and stored
 #define P2_LED        27  // lights up when a P2 requests data
 #define P3_LED        26  // lights up when a P3 requests data
@@ -39,7 +39,6 @@ struct Printer {
 };
 
 P1Reader reader(&Serial1,P1_DR);
-//String telegram;
 
 void setup() {
   disableWiFi(); // we don't need WiFi so disable it to save power so this device can be powered by the DSMR meter (if other phantom powered peripherals are not too power demanding. Be aware, all must be under 250mA)
@@ -104,7 +103,7 @@ void loop() {
 
 void disableWiFi() {
     adc_power_off(); //deprecated, use adc_power_release(void) instead
-    //adc_power_release(); //causes a reboot
+    //adc_power_release();  //causes a reboot
     WiFi.disconnect(true);  // Disconnect from the network
     WiFi.mode(WIFI_OFF);    // Switch WiFi off
 }
