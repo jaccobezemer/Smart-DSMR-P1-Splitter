@@ -44,8 +44,8 @@ void setup() {
   disableWiFi(); // WiFi is not needed so disable it and draw less power
   //Serial.begin(115200);                                   //  UART0, now used for monitoring, later for Alfen Load Balancer
   //Serial.println("Smart Splitter for DSMR P1, Copyright 2022, Jacco Bezemer");
-  pinMode(P2_DR,INPUT); // or should this be INPUT_PULLUP
-  pinMode(P3_DR,INPUT); // or should this be INPUT_PULLUP
+  pinMode(P2_DR,INPUT);
+  pinMode(P3_DR,INPUT);
   pinMode(P1_LED,OUTPUT_OPEN_DRAIN);
   pinMode(P2_LED,OUTPUT_OPEN_DRAIN);
   pinMode(P3_LED,OUTPUT_OPEN_DRAIN);
