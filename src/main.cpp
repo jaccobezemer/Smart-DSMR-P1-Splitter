@@ -68,18 +68,18 @@ void loop() {
     // send the telegram to HomeWizard P1 meter
     if (digitalRead(P2_DR) == LOW) {
       digitalWrite(P2_LED,LOW);       // turn on the data request led for P2
-      Serial2.print("/");             // this whas stripped from the stored telegram so it need's to be send ahead
+      Serial2.print("/");             // this whas stripped from the stored telegram so it has to be send ahead
       Serial2.print(reader.raw());    // sends the telegram that whas stored by the reader
-      Serial2.print(reader.rawCRC()); // this whas stripped from the stored telegram so it need't to be send after
+      Serial2.print(reader.rawCRC()); // this whas stripped from the stored telegram so it has to be sent afterwards
       digitalWrite(P2_LED,HIGH);      // is this long enough to see the led blink?
     }
 
     // send the telegram to Alfen Load Balancer
     if (digitalRead(P3_DR) == LOW) {
       digitalWrite(P3_LED,LOW);       // turn on the data request led for P3
-      Serial.print("/");              // this whas stripped from the stored telegram so it need's to be send ahead
+      Serial.print("/");              // this whas stripped from the stored telegram so it has to be send ahead
       Serial.print(reader.raw());     // sends the telegram that whas stored by the reader
-      Serial.print(reader.rawCRC());  // this whas stripped from the stored telegram so it need't to be send after
+      Serial.print(reader.rawCRC());  // this whas stripped from the stored telegram so it has to be sent afterwards
       digitalWrite(P3_LED,HIGH);      // is this long enough to see the led blink?
     }
 
