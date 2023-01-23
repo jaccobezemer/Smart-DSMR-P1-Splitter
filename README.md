@@ -11,7 +11,7 @@ Devices are attached via optocoupler (U4, VO2631) with the other two UART's (UAR
 ## Schematics
 ![Schema](/media/Schematic_Smart_DSMR_Splitter_2022-12-27.png?raw=true "Schema")
 
-## PCB
+## Several PCB images
 ![Prototype](/media/prototype.jpg?raw=true "Prototype")
 
 ![Working prototype](/media/working-prototype.jpg?raw=true "Working prototype")
