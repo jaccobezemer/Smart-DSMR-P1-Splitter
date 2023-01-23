@@ -12,9 +12,17 @@ Devices are attached via optocoupler (U4, VO2631) with the other two UART's (UAR
 ![Schema](/media/Schematic_Smart_DSMR_Splitter_2022-12-27.png?raw=true "Schema")
 
 ## PCB
+![Prototype](/media/prototype.jpg?raw=true "Prototype")
+
+![Working prototype](/media/working-prototype.jpg?raw=true "Working prototype")
+
 ![PCB top](/media/PCB-top.png?raw=true "PCB top")
 
 ![PCB bottem](/media/PCB-bottom.png?raw=true "PCB bottom")
+
+![Fabricated PCB](/media/PCB-fabricated.jpg?raw=true "Fabricated PCB")
+
+![Final](/media/final.jpg?raw=true "Final product")
 
 ## Todo
 + Add a display and show some relevant info
