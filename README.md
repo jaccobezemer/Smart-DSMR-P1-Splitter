@@ -22,7 +22,7 @@ Devices are attached via optocoupler (U4, VO2631) with the other two UART's (UAR
 
 ![Fabricated PCB](/media/PCB-fabricated.jpg?raw=true "Fabricated PCB")
 
-![Final](/media/final.jpg?raw=true "Final product")
+![Final](/media/final-product.jpg?raw=true "Final product")
 
 ## Todo
 + Add a display and show some relevant info
