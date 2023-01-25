@@ -82,7 +82,7 @@ void setup() {
   ledcWrite(pwmP2led,MAX_DUTY_CYCLE);
   ledcWrite(pwmP3led,MAX_DUTY_CYCLE);
 
-  Serial1.begin(115200,SERIAL_8N1,P1_SERIAL_RX,-1,true);  //  Telgram receive port, UART1 attached to DSMR P1 port receiving telegrams at maximum interval, no send pin nessesary
+  Serial1.begin(115200,SERIAL_8N1,P1_SERIAL_RX,-1,false);  //  Telgram receive port, UART1 attached to DSMR P1 port receiving telegrams at maximum interval, no send pin nessesary
   Serial2.begin(115200,SERIAL_8N1,-1,P2_SERIAL_TX,false);  //  UART2 attached to HomeWizard send telegrams, on request, no receive pin nessesary
 #ifndef USE_MONITOR 
   Serial.begin(115200,SERIAL_8N1,-1,P3_SERIAL_TX,false);   //  UART0 attached to Alfen Load Balancer to send telegrams on request, no receive pin nessesary
