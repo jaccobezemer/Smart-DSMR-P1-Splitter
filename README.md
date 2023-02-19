@@ -18,9 +18,7 @@ Devices are attached via optocoupler (U4, HCPL-0631) with the other two UART's (
 
 ![PCB top](/media/PCB-design-top.png?raw=true "PCB top")
 
-![Fabricated PCB](/media/PCB-fabricated.jpg?raw=true "Fabricated PCB")
-
-![Final](/media/final-product.jpg?raw=true "Final product")
+Version 1.2 PCB are on their way.
 
 ## Todo
 + Add a display and show some relevant info
