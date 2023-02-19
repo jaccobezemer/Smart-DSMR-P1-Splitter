@@ -5,9 +5,9 @@
 
 #define P1_SERIAL_RX  18  // P1 -> UART1 which is attached to Smartmeter P1 TX pin
 #define P1_DR         2   // P1 Data request
-#define P2_SERIAL_TX  17  // P2 -> UART2 which is attached to HomeWizard P1 RX pin
+#define P2_SERIAL_TX  17  // P2 -> UART2 which, in my case, is attached to HomeWizard P1 RX pin
 #define P2_DR         34  // P2 Data request
-#define P3_SERIAL_TX  1   // P3 -> UART0 which is attached to Alfen Loadbalancer RX pin 
+#define P3_SERIAL_TX  1   // P3 -> UART0 which, in my case, is attached to Alfen Loadbalancer RX pin 
 #define P3_DR         35  // P3 Data request
 #define P1_LED        14  // lights up when a telegram is received and stored
 #define P2_LED        27  // lights up when P2 requests data
@@ -21,9 +21,10 @@ const int MAX_DUTY_CYCLE = (int)(pow(2, PWMResolution) - 1);
 const int pwmP1led = 0;
 const int pwmP2led = 1;
 const int pwmP3led = 2;
-const int blinkTime = 100;
+const int blinkTime = 100;            // must be less than telegram interval!
 unsigned long time_now = 0;
 
+#define LED_FOLLOW_DR               // uncomment this if you want the Data Request Led's follow the Data Request signal instead of the telegram transmit 
 //#define USE_MONITOR                 // uncomment this if you want to use one of the UARTs to monitor during development
 //#define PARSE_TELEGRAM              // uncomment this to enable the parser (display P1 values on a display or for debugging to serial)
 
@@ -57,10 +58,11 @@ struct Printer {
 P1Reader reader(&Serial1,P1_DR);
 
 void setup() {
-  disableWiFi();                        // WiFi is not needed so disable it and draw less power
+  
+  disableWiFi();                        // WiFi is not needed so disable it and draw less power (possibly, maybe this is not needed)
 #ifdef USE_MONITOR
   Serial.begin(115200);                 //  UART0, now used for monitoring, later for Alfen Load Balancer
-  Serial.println("Smart Splitter for DSMR P1, Copyright 2022, Jacco Bezemer");
+  Serial.println("Smart Splitter for DSMR P1, Copyright 2022-2023, Jacco Bezemer");
 #endif
   pinMode(P2_DR,INPUT);
   pinMode(P3_DR,INPUT);
@@ -68,16 +70,16 @@ void setup() {
   ledcSetup(pwmP1led, PWMFreq, PWMResolution);
   ledcSetup(pwmP2led, PWMFreq, PWMResolution);
   ledcSetup(pwmP3led, PWMFreq, PWMResolution);
-  /* Attach the LED PWM Channel to the GPIO Pin */
+  // Attach the LED PWM Channel to the GPIO Pin
   ledcAttachPin(P1_LED, pwmP1led);
   ledcAttachPin(P2_LED, pwmP2led);
   ledcAttachPin(P3_LED, pwmP3led);
-  /* Turn LEDs on at max brightness */
+  // Turn LEDs on at max brightness
   ledcWrite(pwmP1led,0);
   ledcWrite(pwmP2led,0);
   ledcWrite(pwmP3led,0);
   delay(2000);
-  /* turn the LEDs off */
+  // turn the LEDs off
   ledcWrite(pwmP1led,MAX_DUTY_CYCLE);
   ledcWrite(pwmP2led,MAX_DUTY_CYCLE);
   ledcWrite(pwmP3led,MAX_DUTY_CYCLE);
@@ -88,10 +90,20 @@ void setup() {
   Serial.begin(115200,SERIAL_8N1,-1,P3_SERIAL_TX,false);   //  UART0 attached to Alfen Load Balancer to send telegrams on request, no receive pin nessesary
 #endif  
   reader.enable(false);                                    //  Reads the telegram send by the P1 meter
+
 }
 
 void loop() {
+
   time_now = millis();
+
+#ifdef LED_FOLLOW_DR
+  if (digitalRead(P2_DR) == LOW) ledcWrite(pwmP2led,dutyCycle);
+  else ledcWrite(pwmP2led,MAX_DUTY_CYCLE);
+
+  if (digitalRead(P3_DR) == LOW) ledcWrite(pwmP3led,dutyCycle);
+  else ledcWrite(pwmP3led,MAX_DUTY_CYCLE); 
+#endif
 
   reader.loop();                          // Allow the reader to check the serial buffer regularly
 
@@ -100,20 +112,29 @@ void loop() {
 
     // send the telegram to P2 (HomeWizard P1 meter)
     if (digitalRead(P2_DR) == LOW) {
+    #ifndef LED_FOLLOW_DR
       ledcWrite(pwmP2led,dutyCycle);      // turn on the data request led for P2
+    #endif  
       Serial2.print("/");                 // this whas stripped from the stored telegram so it has to be send ahead
       Serial2.print(reader.raw());        // sends the telegram that whas stored by the reader
       Serial2.print(reader.rawCRC());     // this whas stripped from the stored telegram so it has to be sent afterwards
-      ledcWrite(pwmP2led,MAX_DUTY_CYCLE); // is this long enough to see the led blink?
+    #ifndef LED_FOLLOW_DR  
+      ledcWrite(pwmP2led,MAX_DUTY_CYCLE);
+    #endif  
     }
 
     // send the telegram to P3 (Alfen Load Balancer)
     if (digitalRead(P3_DR) == LOW) {
+    //if (counter == 10) {
+    #ifndef LED_FOLLOW_DR  
       ledcWrite(pwmP3led,dutyCycle);      // turn on the data request led for P3
+    #endif
       Serial.print("/");                  // this whas stripped from the stored telegram so it has to be send ahead
       Serial.print(reader.raw());         // sends the telegram that whas stored by the reader
       Serial.print(reader.rawCRC());      // this whas stripped from the stored telegram so it has to be sent afterwards
-      ledcWrite(pwmP3led,MAX_DUTY_CYCLE); // is this long enough to see the led blink?
+    #ifndef LED_FOLLOW_DR  
+      ledcWrite(pwmP3led,MAX_DUTY_CYCLE);
+    #endif  
     }
 
 #ifndef PARSE_TELEGRAM
@@ -136,14 +157,13 @@ void loop() {
           //wait approx. [period] ms
       }
     }
-    ledcWrite(pwmP1led,MAX_DUTY_CYCLE);   // turn off the telegram stored led
+    ledcWrite(pwmP1led,MAX_DUTY_CYCLE);   // turn off the telegram stored led so we get notified of a new telegram
   }
 
 }
 
 void disableWiFi() {
-    adc_power_off(); //deprecated, use adc_power_release(void) instead
-    //adc_power_release();  //causes a reboot
-    WiFi.disconnect(true);  // Disconnect from the network
-    WiFi.mode(WIFI_OFF);    // Switch the WiFi radio off
+    WiFi.mode(WIFI_OFF); // Switch the WiFi radio off
+    adc_power_off(); //deprecated, use adc_power_release(void) instead    
+    //adc_power_release();  //causes a reboot, E (10) ADC: adc_power_release called, but s_adc_power_on_cnt == 0
 }
