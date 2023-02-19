@@ -18,7 +18,7 @@ Devices are attached via optocoupler (U4, HCPL-0631) with the other two UART's (
 
 ![PCB top](/media/PCB-design-top.png?raw=true "PCB top")
 
-Version 1.2 PCB are on their way.
+The version 1.2 PCB is on its way.
 
 ## Todo
 + Add a display and show some relevant info
@@ -29,3 +29,6 @@ Version 1.2 PCB are on their way.
 
 + [Arduino Dutch Smart meter (DSMR) parser](https://github.com/matthijskooijman/arduino-dsmr) (slightly modified)
 
+License
+-------
+All of the code in this project is licensed under the GNU General Public License v3.0 (GNU GPLv3) license.
