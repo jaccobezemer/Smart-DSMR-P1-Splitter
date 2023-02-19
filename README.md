@@ -9,7 +9,7 @@ A level shifter and inverter (Q1, BC848B) is attached to UART1 (P1) of an ESP32 
 Devices are attached via optocoupler (U4, HCPL-0631) with the other two UART's (UART2 = P2, UART0 = P3) and are able to request the stored telgram at their own interval (typically 1 or 10 seconds) by bringing the data request signal high. The data request signals are attached with the ESP32 by optocoupler U3 (HCPL-0631). The specs for P1, P2 and P3 are conform the DSMR specification.
 
 ## Schematics
-![Schema](/media/Schematic_Smart DSMR Splitter_1.2.png?raw=true "Schema")
+![Schema](/media/Schematic_Smart_DSMR_Splitter_1_2.png?raw=true "Schema")
 
 ## Several PCB images
 ![Prototype](/media/prototype.jpg?raw=true "Prototype")
